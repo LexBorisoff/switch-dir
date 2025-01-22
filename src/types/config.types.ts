@@ -4,7 +4,7 @@ export interface ConfigInterface {
    */
   command: string;
   /**
-   * Linked directory paths
+   * Quick access directories
    */
-  links: Record<string, string>;
+  quickAccess: Record<string, string>;
 }
