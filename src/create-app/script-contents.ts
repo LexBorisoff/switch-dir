@@ -1,17 +1,17 @@
-import { PATHS } from '../constants.js';
+import { paths } from '../paths.js';
 
 export const bashFunction = (
   functionName: string,
 ): string => `#!/usr/bin/env bash
 
 ${functionName}() {
-  if test -f "${PATHS.MAIN_FILE}"; then
+  if test -f "${paths.main}"; then
     # get the directory name
-    node "${PATHS.MAIN_FILE}" "$@"
-    local directory=$(<"${PATHS.DIR_FILE}")
+    node "${paths.main}" "$@"
+    local directory=$(<"${paths.directory}")
     
     # clear tmp files
-    >"${PATHS.DIR_FILE}"
+    >"${paths.directory}"
 
     # cd to directory
     if test -n "$directory"; then
@@ -23,8 +23,8 @@ ${functionName}() {
 
 export const bashStartScript = `#!/usr/bin/env bash
 
-if test -d "${PATHS.BIN_DIR}"; then
-	for file in "${PATHS.BIN_DIR}"/*.sh; do
+if test -d "${paths.bin}"; then
+	for file in "${paths.bin}"/*.sh; do
 		if test -f "$file"; then
 			. "$file"
 		fi
@@ -34,13 +34,13 @@ fi
 
 export const powershellScript = `#!/usr/bin/env pwsh
 
-if (Test-Path -Path "${PATHS.MAIN_FILE}") {
+if (Test-Path -Path "${paths.main}") {
   # get the script name  
-  node "${PATHS.MAIN_FILE}" $args
-  $Directory = Get-Content -Path "${PATHS.DIR_FILE}" -ErrorAction SilentlyContinue
+  node "${paths.main}" $args
+  $Directory = Get-Content -Path "${paths.directory}" -ErrorAction SilentlyContinue
 
   # clear tmp files
-  Clear-Content -Path "${PATHS.DIR_FILE}"
+  Clear-Content -Path "${paths.directory}"
 
   # run the script
   if (![string]::IsNullOrEmpty($Directory)) {
