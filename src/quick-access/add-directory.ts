@@ -6,10 +6,7 @@ import chalk from 'chalk';
 
 import { getConfigData } from '../config/get-config-data.js';
 import { updateConfig } from '../config/update-config.js';
-import { args } from '../utils/args.js';
 import { logger } from '../utils/logger.js';
-
-const { force } = args;
 
 export async function addDirectory(dirArg: string): Promise<void> {
   const fullDirPath = path.resolve(dirArg);
@@ -18,16 +15,16 @@ export async function addDirectory(dirArg: string): Promise<void> {
     throw new Error('Provided directory does not exist');
   }
 
-  const { quickAccess } = getConfigData();
+  const { portals } = getConfigData();
 
   const [existingName] =
-    Object.entries(quickAccess).find(
+    Object.entries(portals).find(
       ([, value]) => path.resolve(value) === fullDirPath,
     ) ?? [];
 
   let override = true;
 
-  if (existingName && !force) {
+  if (existingName != null) {
     const styledName = chalk.bold.italic.underline(existingName);
     logger.warn(`Provided directory is already added as ${styledName}`);
 
@@ -47,7 +44,7 @@ export async function addDirectory(dirArg: string): Promise<void> {
     return;
   }
 
-  const otherNames = Object.keys(quickAccess).filter(
+  const otherNames = Object.keys(portals).filter(
     (key) => existingName == null || key !== existingName,
   );
 
@@ -69,7 +66,7 @@ export async function addDirectory(dirArg: string): Promise<void> {
 
   if (existingName == null || existingName !== dirName) {
     const updated = {
-      ...quickAccess,
+      ...portals,
       [dirName]: fullDirPath,
     };
 
@@ -78,7 +75,7 @@ export async function addDirectory(dirArg: string): Promise<void> {
     }
 
     updateConfig({
-      quickAccess: updated,
+      portals: updated,
     });
   }
 }

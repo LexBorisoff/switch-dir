@@ -4,7 +4,7 @@ export interface ConfigInterface {
    */
   command: string;
   /**
-   * Quick access directories
+   * Saved directories for quick navigation
    */
-  quickAccess: Record<string, string>;
+  portals: Record<string, string>;
 }
