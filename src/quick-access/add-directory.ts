@@ -53,9 +53,13 @@ export async function addDirectory(dirArg: string): Promise<void> {
 
   const { dirName } = await $_.text({
     name: 'dirName',
-    message: 'Assign quick access name for this directory',
-    validate(result) {
-      return !otherNames.includes(result) || 'Name is already taken';
+    message: 'What should be the name for this directory',
+    validate(input) {
+      if (otherNames.includes(input)) {
+        return 'Name is already taken';
+      }
+
+      return input !== '' || 'Invalid name';
     },
   });
 
