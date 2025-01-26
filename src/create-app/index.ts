@@ -19,8 +19,8 @@ import { linkDist } from './link-dist.js';
 
   if (command != null) {
     await initializeApp();
+    await createScriptFiles(command);
     linkDist();
-    createScriptFiles(command);
     updateConfig({ command });
   }
 })();
