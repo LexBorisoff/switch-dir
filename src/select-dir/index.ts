@@ -1,17 +1,34 @@
-import path from 'node:path';
-
 import { args } from '../utils/args.js';
 
 import { traverseArgs } from './traverse-args.js';
 import { traverseSelect } from './traverse-select.js';
+import { getPortalPath } from './utils/get-portal-path.js';
 
-const { _ } = args;
+const { _, root, portal, interactive } = args;
 
 export async function selectDir(): Promise<string | undefined> {
-  const currentDir = _.length > 0 ? path.resolve(`${_[0]}`) : process.cwd();
-  const dirArgs = _.slice(1).map((arg) => `${arg}`);
+  let directory: string | undefined = undefined;
+  let currentDir = root ?? process.cwd();
 
-  return dirArgs.length > 0
-    ? await traverseArgs(currentDir, dirArgs)
-    : await traverseSelect(currentDir);
+  if (portal != null) {
+    const portalPath = await getPortalPath(portal);
+    if (portalPath == null) {
+      return undefined;
+    }
+
+    currentDir = portalPath;
+  }
+
+  const dirArgs = _.map((arg) => `${arg}`);
+
+  if (dirArgs.length > 0) {
+    directory = await traverseArgs(currentDir, dirArgs);
+    if (directory == null) {
+      return undefined;
+    }
+
+    return interactive ? await traverseSelect(directory) : directory;
+  }
+
+  return await traverseSelect(currentDir);
 }
