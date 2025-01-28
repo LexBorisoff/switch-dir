@@ -2,12 +2,13 @@
 
 import { args } from './args.js';
 import { addPortal } from './portals/add-portal.js';
-import { configPortals } from './portals/config-portals.js';
+import { deletePortals } from './portals/delete-portals.js';
+import { listPortals } from './portals/list-portals.js';
 import { selectDir } from './select-dir/index.js';
 import { logger } from './utils/logger.js';
 import { updateTmp } from './utils/update-tmp.js';
 
-const { add, config } = args;
+const { list, add, delete: remove } = args;
 
 (async function main() {
   try {
@@ -16,8 +17,13 @@ const { add, config } = args;
       return;
     }
 
-    if (config) {
-      await configPortals();
+    if (list) {
+      void listPortals();
+      return;
+    }
+
+    if (remove) {
+      await deletePortals();
       return;
     }
 

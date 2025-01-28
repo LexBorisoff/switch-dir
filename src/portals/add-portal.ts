@@ -50,9 +50,11 @@ export async function addPortal(dirArg: string): Promise<void> {
     (key) => existingName == null || key !== existingName,
   );
 
+  logger.warn(fullDirPath);
+
   const { dirName } = await $_.text({
     name: 'dirName',
-    message: 'What should be the name for this directory',
+    message: 'Portal name',
     validate(input) {
       if (otherNames.includes(input)) {
         return 'Name is already taken';

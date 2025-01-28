@@ -7,6 +7,7 @@ import { PACKAGE_VERSION } from './constants.js';
 const group = {
   portals: 'Portal Options:',
   navigation: 'Navigation Options:',
+  config: 'Config Options:',
 };
 
 const options = [
@@ -14,8 +15,8 @@ const options = [
   'portal',
   'select',
   'add',
-  'remove',
-  'prune',
+  'list',
+  'delete',
   'rename',
 ] as const;
 
@@ -55,18 +56,31 @@ export const args = yargs(hideBin(process.argv))
   })
   .option('add', {
     type: 'string',
-    description: 'Add a directory path to portals',
+    description: 'Add a portal directory',
     requiresArg: true,
     alias: 'a',
     group: group.portals,
     conflicts: noConflict('add'),
   })
-  .option('config', {
+  .option('list', {
     type: 'boolean',
-    description: 'Manage portals configuration',
-    alias: 'c',
+    description: 'List portal directories',
+    alias: 'l',
     group: group.portals,
-    conflicts: noConflict('remove'),
+    conflicts: noConflict('list'),
+  })
+  .option('delete', {
+    type: 'boolean',
+    description: 'Delete portal directories',
+    alias: 'd',
+    group: group.portals,
+    conflicts: noConflict('delete'),
+  })
+  .option('rename', {
+    type: 'string',
+    description: 'Rename the command',
+    group: group.config,
+    conflicts: noConflict('rename'),
   })
   .help()
   .version(PACKAGE_VERSION)
