@@ -9,40 +9,77 @@ import { getDirNames } from './utils/get-dir-names.js';
 import { getFinalPath } from './utils/get-final-path.js';
 import { suggestMatch } from './utils/suggest-match.js';
 
+function filter(arg: string, exact = false) {
+  return function (dir: string): boolean {
+    const a = arg.toLowerCase();
+    const d = dir.toLowerCase();
+    return d === a || (!exact && d.includes(a));
+  };
+}
+
 export async function traverseArgs(
   currentDir: string,
   dirArgs: string[],
 ): Promise<string | undefined> {
   let aborted = false;
   const dirNames: string[] = [];
-  const hasNextArg = (): boolean => dirArgs[dirNames.length] != null;
+
+  function getMatchedDirs(arg: string): string[] {
+    const currentPath = path.resolve(currentDir, ...dirNames);
+    const currentDirs = getDirNames(currentPath);
+    return currentDirs.filter(filter(arg));
+  }
+
+  function hasNextPrompt(): boolean {
+    const nextArg = dirArgs.at(dirNames.length);
+    if (nextArg == null) {
+      return false;
+    }
+
+    const { length } = getMatchedDirs(nextArg);
+    return length === 0 || length > 1;
+  }
+
+  /**
+   * Returns true if there is a next arg in dirArgs
+   */
+  function addDir(dir: string): boolean {
+    dirNames.push(dir);
+    return dirArgs.at(dirNames.length) != null;
+  }
 
   async function traverse(): Promise<void> {
     let state = { aborted: false, exited: false };
 
-    const currentArg = dirArgs[dirNames.length];
+    const currentArg = dirArgs.at(dirNames.length);
     if (currentArg == null) {
       return;
     }
 
     const currentPath = path.resolve(currentDir, ...dirNames);
-    const currentDirs = getDirNames(currentPath);
-    const matchedDirs = currentDirs.filter((dir) => {
-      const a = currentArg.toLowerCase();
-      const d = dir.toLowerCase();
-      return d === a || d.includes(a);
-    });
+    const matchedDirs = getMatchedDirs(currentArg);
 
+    // single match
     if (matchedDirs.length === 1) {
-      dirNames.push(matchedDirs[0]);
-      if (hasNextArg()) {
+      const hasNextArg = addDir(matchedDirs[0]);
+      if (hasNextArg) {
         await traverse();
       }
       return;
     }
 
-    const hasMatches = matchedDirs.length > 0;
+    // exact match
+    const exactMatches = matchedDirs.filter(filter(currentArg, true));
+    if (exactMatches.length === 1) {
+      const hasNextArg = addDir(exactMatches[0]);
+      if (hasNextArg) {
+        await traverse();
+      }
+      return;
+    }
 
+    // multiple or no matches
+    const hasMatches = matchedDirs.length > 0;
     const message = hasMatches
       ? `Argument ${colors.yellow.italic(
           currentArg,
@@ -79,10 +116,12 @@ export async function traverseArgs(
       return;
     }
 
-    dirNames.push(selected);
+    const hasNextArg = addDir(selected);
+    if (hasNextArg && selected !== '.' && selected !== '..') {
+      if (hasNextPrompt()) {
+        logger.log('');
+      }
 
-    if (hasNextArg() && selected !== '.' && selected !== '..') {
-      logger.log('');
       await traverse();
     }
   }
