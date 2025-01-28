@@ -74,8 +74,17 @@ export async function addDirectory(dirArg: string): Promise<void> {
       delete updated[existingName];
     }
 
+    const sortedNames = Object.keys(updated).sort((a, b) => a.localeCompare(b));
+    const sortedPortals = sortedNames.reduce<Record<string, string>>(
+      (acc, key) => {
+        acc[key] = updated[key];
+        return acc;
+      },
+      {},
+    );
+
     updateConfig({
-      portals: updated,
+      portals: sortedPortals,
     });
   }
 }
