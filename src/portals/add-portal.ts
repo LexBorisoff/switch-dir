@@ -8,6 +8,8 @@ import { getConfigData } from '../config/get-config-data.js';
 import { updateConfig } from '../config/update-config.js';
 import { logger } from '../utils/logger.js';
 
+import { sortPortals } from './utils/sort-portalts.js';
+
 export async function addPortal(dirArg: string): Promise<void> {
   const fullDirPath = path.resolve(dirArg);
 
@@ -74,17 +76,8 @@ export async function addPortal(dirArg: string): Promise<void> {
       delete updated[existingName];
     }
 
-    const sortedNames = Object.keys(updated).sort((a, b) => a.localeCompare(b));
-    const sortedPortals = sortedNames.reduce<Record<string, string>>(
-      (acc, key) => {
-        acc[key] = updated[key];
-        return acc;
-      },
-      {},
-    );
-
     updateConfig({
-      portals: sortedPortals,
+      portals: sortPortals(updated),
     });
   }
 }
