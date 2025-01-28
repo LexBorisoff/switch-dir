@@ -1,8 +1,8 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-import { getConfigData } from '../config/get-config-data.js';
-import { PACKAGE_VERSION } from '../constants.js';
+import { getConfigData } from './config/get-config-data.js';
+import { PACKAGE_VERSION } from './constants.js';
 
 const group = {
   portals: 'Portal Options:',

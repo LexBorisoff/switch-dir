@@ -1,4 +1,4 @@
-import { args } from '../utils/args.js';
+import { args } from '../args.js';
 
 import { traverseArgs } from './traverse-args.js';
 import { traverseSelect } from './traverse-select.js';
