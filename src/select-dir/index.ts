@@ -30,12 +30,20 @@ export async function selectDir(): Promise<string | undefined> {
   // construct path based on provided args
   if (dirArgs.length > 0) {
     finalPath = await traverseArgs(rootPath, dirArgs);
+
+    if (finalPath == null) {
+      return undefined;
+    }
   }
 
   // prompt directory selection
   if (interactive) {
     // traverse using finalPath if it was built with args
     finalPath = await traverseSelect(finalPath ?? rootPath);
+
+    if (finalPath == null) {
+      return undefined;
+    }
   }
 
   return finalPath ?? rootPath;
