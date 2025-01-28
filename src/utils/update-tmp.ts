@@ -1,4 +1,4 @@
-import { useCoreHooks } from './hooks/use-core-hooks.js';
+import { useCoreHooks } from '../hooks/use-core-hooks.js';
 
 export function updateTmp(dir: string): void {
   const rootDir = useCoreHooks((root) => root);

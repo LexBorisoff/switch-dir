@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
+import { args } from './args.js';
 import { addDirectory } from './portals/add-directory.js';
 import { selectDir } from './select-dir/index.js';
-import { updateTmp } from './update-tmp.js';
-import { args } from './args.js';
 import { logger } from './utils/logger.js';
+import { updateTmp } from './utils/update-tmp.js';
 
 const { add } = args;
 
