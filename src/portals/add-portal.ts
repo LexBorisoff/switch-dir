@@ -8,7 +8,7 @@ import { getConfigData } from '../config/get-config-data.js';
 import { updateConfig } from '../config/update-config.js';
 import { logger } from '../utils/logger.js';
 
-export async function addDirectory(dirArg: string): Promise<void> {
+export async function addPortal(dirArg: string): Promise<void> {
   const fullDirPath = path.resolve(dirArg);
 
   if (!fs.existsSync(fullDirPath)) {
