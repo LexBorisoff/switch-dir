@@ -30,7 +30,7 @@ function noConflict(itself: Option, ...other: Option[]): Option[] {
 export const args = yargs(hideBin(process.argv))
   .scriptName(getConfigData().command)
   .usage(`Usage: $0 [ARG]... [OPTION]...`)
-  .usage(`Supercharged and interactive navigation between directories`)
+  .usage(`Fast and interactive navigation between directories`)
   .option('root', {
     type: 'string',
     description: 'Root path to start from',
