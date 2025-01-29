@@ -9,7 +9,7 @@ import { getDirNames } from './utils/get-dir-names.js';
 import { getFinalPath } from './utils/get-final-path.js';
 import { suggestMatch } from './utils/suggest-match.js';
 
-function filter(arg: string, exact = false) {
+function getFilterFn(arg: string, exact = false) {
   return function (dir: string): boolean {
     const a = arg.toLowerCase();
     const d = dir.toLowerCase();
@@ -18,26 +18,21 @@ function filter(arg: string, exact = false) {
 }
 
 export async function traverseArgs(
-  currentDir: string,
+  rootPath: string,
   dirArgs: string[],
 ): Promise<string | undefined> {
   let aborted = false;
   const dirNames: string[] = [];
 
   function getMatchedDirs(arg: string): string[] {
-    const currentPath = path.resolve(currentDir, ...dirNames);
+    const currentPath = path.resolve(rootPath, ...dirNames);
     const currentDirs = getDirNames(currentPath);
-    return currentDirs.filter(filter(arg));
+    return currentDirs.filter(getFilterFn(arg));
   }
 
   function hasNextPrompt(): boolean {
     const nextArg = dirArgs.at(dirNames.length);
-    if (nextArg == null) {
-      return false;
-    }
-
-    const { length } = getMatchedDirs(nextArg);
-    return length === 0 || length > 1;
+    return nextArg != null && getMatchedDirs(nextArg).length !== 1;
   }
 
   /**
@@ -56,7 +51,7 @@ export async function traverseArgs(
       return;
     }
 
-    const currentPath = path.resolve(currentDir, ...dirNames);
+    const currentPath = path.resolve(rootPath, ...dirNames);
     const matchedDirs = getMatchedDirs(currentArg);
 
     // single match
@@ -69,7 +64,7 @@ export async function traverseArgs(
     }
 
     // exact match
-    const exactMatches = matchedDirs.filter(filter(currentArg, true));
+    const exactMatches = matchedDirs.filter(getFilterFn(currentArg, true));
     if (exactMatches.length === 1) {
       const hasNextArg = addDir(exactMatches[0]);
       if (hasNextArg) {
@@ -127,5 +122,5 @@ export async function traverseArgs(
   }
 
   await traverse();
-  return aborted ? undefined : getFinalPath(currentDir, dirNames);
+  return aborted ? undefined : getFinalPath(rootPath, dirNames);
 }

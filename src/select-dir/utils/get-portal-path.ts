@@ -5,7 +5,7 @@ import { colors } from '../../utils/logger.js';
 
 import { suggestMatch } from './suggest-match.js';
 
-function filter(portalArg: string) {
+function getFilterFn(portalArg: string) {
   return function ([key]: [key: string, value: string]) {
     const a = portalArg.toLowerCase();
     const k = key.toLowerCase();
@@ -23,7 +23,7 @@ export async function getPortalPath(
     return portals[portalArg];
   }
 
-  const matchedPortals = Object.entries(portals).filter(filter(portalArg));
+  const matchedPortals = Object.entries(portals).filter(getFilterFn(portalArg));
 
   // single match
   if (matchedPortals.length === 1) {

@@ -64,7 +64,7 @@ export async function deletePortals(): Promise<void> {
     return;
   }
 
-  function checkBroken(portalName: string, portalPath: string): string {
+  function checkReachable(portalName: string, portalPath: string): string {
     return fs.existsSync(portalPath)
       ? portalName
       : `${portalName} (unreachable)`;
@@ -74,7 +74,7 @@ export async function deletePortals(): Promise<void> {
     ...portals.unreachable,
     ...portals.reachable,
   }).map(([key, value]) => ({
-    title: checkBroken(key, value),
+    title: checkReachable(key, value),
     value: key,
     description: value,
   }));

@@ -7,12 +7,12 @@ import { getFinalPath } from './utils/get-final-path.js';
 import { suggestMatch } from './utils/suggest-match.js';
 
 export async function traverseSelect(
-  currentDir: string,
+  rootPath: string,
 ): Promise<string | undefined> {
   let aborted = false;
   const dirNames: string[] = [];
 
-  async function traverse(parentPath: string = currentDir): Promise<void> {
+  async function traverse(parentPath: string = rootPath): Promise<void> {
     let state = { aborted: false, exited: false };
     const choices = getDirChoices(parentPath);
 
@@ -46,6 +46,5 @@ export async function traverseSelect(
   }
 
   await traverse();
-
-  return aborted ? undefined : getFinalPath(currentDir, dirNames);
+  return aborted ? undefined : getFinalPath(rootPath, dirNames);
 }
