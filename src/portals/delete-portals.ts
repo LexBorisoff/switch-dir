@@ -6,7 +6,7 @@ import { portals } from '../config/portals.js';
 import { updateConfig } from '../config/update-config.js';
 import { suggestMatch } from '../select-dir/utils/suggest-match.js';
 
-import type { Choice } from '../types/choice.types.js';
+import type { Choice } from '@lexjs/prompts/lib';
 
 enum DeleteOption {
   Delete = 'remove',

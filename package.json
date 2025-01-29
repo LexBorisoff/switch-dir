@@ -10,9 +10,9 @@
     "ci": "npm run check-style && npm run check-build",
     "check-style": "npm run format:check && npm run lint",
     "check-build": "npm run compile -- --noEmit",
-    "format": "prettier --write *.{js,cjs,mjs,ts,cts,mts} {src,test}/**/*.ts",
-    "format:check": "prettier --check *.{js,cjs,mjs,ts,cts,mts} {src,test}/**/*.ts",
-    "lint": "eslint {src,test}/**/*.{js,ts}",
+    "format": "prettier --write \"*.{js,cjs,mjs,ts,cts,mts}\" \"{src,test}/**/*.ts\"",
+    "format:check": "prettier --check \"*.{js,cjs,mjs,ts,cts,mts}\" \"{src,test}/**/*.ts\"",
+    "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
     "lint:fix": "npm run lint -- --fix",
     "style": "npm run format && npm run lint:fix",
     "compile": "tsc -p tsconfig.json",
@@ -62,7 +62,7 @@
     "typescript-eslint": "^8.21.0"
   },
   "dependencies": {
-    "@lexjs/prompts": "^1.1.3",
+    "@lexjs/prompts": "^1.1.4",
     "chalk": "^4.1.2",
     "dotenv": "^16.4.7",
     "execa": "^9.5.2",
