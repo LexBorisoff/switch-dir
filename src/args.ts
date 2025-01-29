@@ -10,20 +10,18 @@ const group = {
   config: 'Config Options:',
 };
 
-const options = [
-  'root',
-  'portal',
-  'select',
-  'add',
-  'list',
-  'delete',
-  'rename',
-] as const;
-
-type Option = (typeof options)[number];
+enum Option {
+  Root = 'root',
+  Portal = 'portal',
+  Interactive = 'interactive',
+  List = 'list',
+  Add = 'add',
+  Delete = 'delete',
+  Rename = 'rename',
+}
 
 function noConflict(itself: Option, ...other: Option[]): Option[] {
-  return options.filter(
+  return Object.values(Option).filter(
     (option) => option !== itself && !other.includes(option),
   );
 }
@@ -32,55 +30,55 @@ export const args = yargs(hideBin(process.argv))
   .scriptName(getConfigData().command)
   .usage(`Usage: $0 [ARG]... [OPTION]...`)
   .usage(`Fast and interactive navigation between directories`)
-  .option('root', {
+  .option(Option.Portal, {
     type: 'string',
-    description: 'Root path to start from',
+    description: 'Portal directory to switch to / start from',
+    alias: 'p',
+    group: group.navigation,
+    conflicts: noConflict(Option.Portal, Option.Interactive),
+  })
+  .option(Option.Root, {
+    type: 'string',
+    description: 'Root path to switch to / start from',
     alias: 'r',
     group: group.navigation,
     requiresArgs: true,
-    conflicts: noConflict('root', 'select'),
+    conflicts: noConflict(Option.Root, Option.Interactive),
   })
-  .option('portal', {
-    type: 'string',
-    description: 'Portal directory to start from',
-    alias: 'p',
-    group: group.navigation,
-    conflicts: noConflict('portal', 'select'),
-  })
-  .option('interactive', {
+  .option(Option.Interactive, {
     type: 'boolean',
     description: 'Interactive directory selection',
     group: group.navigation,
     alias: 'i',
-    conflicts: noConflict('select', 'root', 'portal'),
+    conflicts: noConflict(Option.Interactive, Option.Root, Option.Portal),
   })
-  .option('add', {
+  .option(Option.Add, {
     type: 'string',
     description: 'Add a portal directory',
     requiresArg: true,
     alias: 'a',
     group: group.portals,
-    conflicts: noConflict('add'),
+    conflicts: noConflict(Option.Add),
   })
-  .option('list', {
+  .option(Option.List, {
     type: 'boolean',
     description: 'List portal directories',
     alias: 'l',
     group: group.portals,
-    conflicts: noConflict('list'),
+    conflicts: noConflict(Option.List),
   })
-  .option('delete', {
+  .option(Option.Delete, {
     type: 'boolean',
     description: 'Delete portal directories',
     alias: 'd',
     group: group.portals,
-    conflicts: noConflict('delete'),
+    conflicts: noConflict(Option.Delete),
   })
-  .option('rename', {
+  .option(Option.Rename, {
     type: 'string',
     description: 'Rename the command',
     group: group.config,
-    conflicts: noConflict('rename'),
+    conflicts: noConflict(Option.Rename),
   })
   .help()
   .version(PACKAGE_VERSION)
