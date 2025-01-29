@@ -2,57 +2,37 @@ import fs from 'node:fs';
 
 import $_ from '@lexjs/prompts';
 
-import { getConfigData } from '../config/get-config-data.js';
+import { portals } from '../config/portals.js';
 import { updateConfig } from '../config/update-config.js';
 import { suggestMatch } from '../select-dir/utils/suggest-match.js';
 
-import { sortPortals } from './utils/sort-portalts.js';
-
 import type { Choice } from '../types/choice.types.js';
 
-const { portals } = getConfigData();
-
-enum Option {
+enum DeleteOption {
   Delete = 'remove',
   Prune = 'prune',
 }
 
-const deleteChoices: Choice<Option>[] = [
+const deleteChoices: Choice<DeleteOption>[] = [
   {
     title: 'Delete',
+    value: DeleteOption.Delete,
     description: 'Select portals to delete',
-    value: Option.Delete,
   },
   {
     title: 'Prune',
-    value: Option.Prune,
+    value: DeleteOption.Prune,
     description: 'Prune all unreachable portals',
   },
 ];
 
-function getPortals(existing: boolean): Record<string, string> {
-  return Object.entries(portals).reduce<Record<string, string>>(
-    (acc, [key, value]) => {
-      if (fs.existsSync(value) === existing) {
-        acc[key] = value;
-      }
-      return acc;
-    },
-    {},
-  );
-}
-
 export async function deletePortals(): Promise<void> {
-  let option = Option.Delete;
-
-  const existingPortals = getPortals(true);
-  const brokenPortals = getPortals(false);
-
-  const hasUnreachablePortals = Object.keys(brokenPortals).length > 0;
+  let option = DeleteOption.Delete;
+  const hasUnreachablePortals = Object.keys(portals.unreachable).length > 0;
 
   function prunePortals(deleteKeys?: string[]): void {
-    const keys = deleteKeys ?? Object.keys(brokenPortals);
-    const updated = Object.entries(portals).reduce<Record<string, string>>(
+    const keys = deleteKeys ?? Object.keys(portals.unreachable);
+    const updated = Object.entries(portals.all).reduce<Record<string, string>>(
       (acc, [key, value]) => {
         if (!keys.includes(key)) {
           acc[key] = value;
@@ -62,26 +42,24 @@ export async function deletePortals(): Promise<void> {
       {},
     );
 
-    updateConfig({
-      portals: sortPortals(updated),
-    });
+    updateConfig({ portals: updated });
   }
 
   if (hasUnreachablePortals) {
-    const { selected } = await $_.select({
-      name: 'selected',
+    const { deleteOption } = await $_.select({
+      name: 'deleteOption',
       message: 'Select a delete option',
       choices: deleteChoices,
     });
 
-    if (selected == null) {
+    if (deleteOption == null) {
       return;
     }
 
-    option = selected;
+    option = deleteOption;
   }
 
-  if (option === Option.Prune) {
+  if (option === DeleteOption.Prune) {
     prunePortals();
     return;
   }
@@ -93,8 +71,8 @@ export async function deletePortals(): Promise<void> {
   }
 
   const portalChoices: Choice<string>[] = Object.entries({
-    ...brokenPortals,
-    ...existingPortals,
+    ...portals.unreachable,
+    ...portals.reachable,
   }).map(([key, value]) => ({
     title: checkBroken(key, value),
     value: key,

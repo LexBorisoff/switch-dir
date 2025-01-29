@@ -4,20 +4,17 @@ import path from 'node:path';
 import $_ from '@lexjs/prompts';
 import chalk from 'chalk';
 
-import { getConfigData } from '../config/get-config-data.js';
+import { portals as portalGroups } from '../config/portals.js';
 import { updateConfig } from '../config/update-config.js';
 import { logger } from '../utils/logger.js';
 
-import { sortPortals } from './utils/sort-portalts.js';
-
 export async function addPortal(dirArg: string): Promise<void> {
+  const { all: portals } = portalGroups;
   const fullDirPath = path.resolve(dirArg);
 
   if (!fs.existsSync(fullDirPath)) {
     throw new Error('Provided directory does not exist');
   }
-
-  const { portals } = getConfigData();
 
   const [existingName] =
     Object.entries(portals).find(
@@ -30,16 +27,16 @@ export async function addPortal(dirArg: string): Promise<void> {
     const styledName = chalk.bold.italic.underline(existingName);
     logger.warn(`Provided directory is already added as ${styledName}`);
 
-    const { answer } = await $_.toggle({
-      name: 'answer',
+    const { rename } = await $_.toggle({
+      name: 'rename',
       message: 'Rename it?',
     });
 
-    if (answer == null) {
+    if (rename == null) {
       return;
     }
 
-    override = answer;
+    override = rename;
   }
 
   if (!override) {
@@ -78,8 +75,6 @@ export async function addPortal(dirArg: string): Promise<void> {
       delete updated[existingName];
     }
 
-    updateConfig({
-      portals: sortPortals(updated),
-    });
+    updateConfig({ portals: updated });
   }
 }

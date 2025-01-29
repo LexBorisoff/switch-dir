@@ -1,8 +1,6 @@
-import fs from 'node:fs';
-
 import $_ from '@lexjs/prompts';
 
-import { getConfigData } from '../../config/get-config-data.js';
+import { portals as portalGroups } from '../../config/portals.js';
 import { colors } from '../../utils/logger.js';
 
 import { suggestMatch } from './suggest-match.js';
@@ -18,18 +16,7 @@ function filter(portalArg: string) {
 export async function getPortalPath(
   portalArg: string,
 ): Promise<string | undefined> {
-  const { portals: configPortals } = getConfigData();
-
-  // filter out unreachable portal paths
-  const portals = Object.entries(configPortals).reduce<Record<string, string>>(
-    (acc, [key, value]) => {
-      if (fs.existsSync(value)) {
-        acc[key] = value;
-      }
-      return acc;
-    },
-    {},
-  );
+  const { reachable: portals } = portalGroups;
 
   // exact match
   if (portalArg !== '' && portals[portalArg] != null) {

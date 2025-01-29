@@ -1,50 +1,41 @@
-import fs from 'node:fs';
-
-import { getConfigData } from '../config/get-config-data.js';
+import { portals } from '../config/portals.js';
 import { colors, logger } from '../utils/logger.js';
 
 export function listPortals(): void {
-  const { portals } = getConfigData();
-
-  const portalNames = Object.keys(portals).sort((a, b) => b.length - a.length);
-
-  if (portalNames.length === 0) {
+  if (Object.keys(portals.all).length === 0) {
     logger.error(`No portals created`);
     return;
   }
 
   function whitespace(portalName: string): string {
-    const longestKey = portalNames[0].length;
+    const sorted = Object.keys(portals.all).sort((a, b) => b.length - a.length);
+    const longestKey = sorted[0].length;
     const minFill = 4;
     const fill = '.'.repeat(longestKey - portalName.length + minFill);
     return ' ' + colors.gray(fill) + ' ';
   }
 
-  function display(isBroken = false) {
+  function display(isReachable: boolean) {
     return function ([key, value]: [key: string, value: string]) {
-      const portal = colors.yellow(key);
+      const portalName = colors.yellow(key);
       const unreachable = `${colors.red(value)} ${colors.gray('(unreachable)')}`;
-      const dir = isBroken ? unreachable : value;
-      logger.log(`${portal}${whitespace(key)}${dir}`);
+      const portalPath = isReachable ? value : unreachable;
+      logger.log(`${portalName}${whitespace(key)}${portalPath}`);
     };
   }
 
-  const sortedByName = Object.entries(portals).sort(([a], [b]) =>
-    a.localeCompare(b),
-  );
+  const reachable = Object.entries(portals.reachable);
+  const unreachable = Object.entries(portals.unreachable);
 
-  const existing = sortedByName.filter(([, dirPath]) => fs.existsSync(dirPath));
-  const broken = sortedByName.filter(([, dirPath]) => !fs.existsSync(dirPath));
+  if (reachable.length > 0) {
+    reachable.forEach(display(true));
 
-  if (existing.length > 0) {
-    existing.forEach(display());
-
-    if (broken.length > 0) {
+    if (unreachable.length > 0) {
       logger.log('');
     }
   }
 
-  if (broken.length > 0) {
-    broken.forEach(display(true));
+  if (unreachable.length > 0) {
+    unreachable.forEach(display(false));
   }
 }
