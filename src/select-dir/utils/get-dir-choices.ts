@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import { getDirNames } from './get-dir-names.js';
 
-import type { Choice } from '../../types/choice.types.js';
+import type { Choice } from '@lexjs/prompts/lib';
 
 export function getDirChoices(
   dirPath: string,
