@@ -1,17 +1,29 @@
 #!/usr/bin/env node
 
-import { selectDir } from './directory/select-dir.js';
-import { addDirectory } from './portals/add-directory.js';
-import { updateTmp } from './update-tmp.js';
-import { args } from './utils/args.js';
+import { args } from './args.js';
+import { addPortal } from './portals/add-portal.js';
+import { deletePortals } from './portals/delete-portals.js';
+import { listPortals } from './portals/list-portals.js';
+import { selectDir } from './select-dir/index.js';
 import { logger } from './utils/logger.js';
+import { updateTmp } from './utils/update-tmp.js';
 
-const { add } = args;
+const { list, add, delete: remove } = args;
 
 (async function main() {
   try {
     if (add != null) {
-      await addDirectory(add);
+      await addPortal(add);
+      return;
+    }
+
+    if (list) {
+      void listPortals();
+      return;
+    }
+
+    if (remove) {
+      await deletePortals();
       return;
     }
 

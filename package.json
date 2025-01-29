@@ -1,7 +1,7 @@
 {
   "name": "switch-dir",
   "version": "0.0.0-semantically-released",
-  "description": "CLI for supercharged and interactive navigation between directories",
+  "description": "CLI for fast and interactive navigation between directories",
   "type": "module",
   "scripts": {
     "prepack": "npm run build",
