@@ -9,8 +9,8 @@ CLI for fast and interactive navigation between directories.
 - [Usage](#usage)
   - [Arguments](#arguments)
   - [Ambiguous arguments](#ambiguous-arguments)
-  - [Starting path](#starting-path)
   - [Interactive mode](#interactive-mode)
+  - [Starting path](#starting-path)
 - [Portals](#portals)
   - [List portals](#list-portals)
   - [Add a new portal](#add-a-new-portal)
@@ -96,7 +96,7 @@ app
     └── user
 ```
 
-<img src="https://github.com/LexBorisoff/switch-dir/blob/readme/media/usage.gif?raw=true" alt="usage example" width="1000" />
+<img src="https://github.com/LexBorisoff/switch-dir/blob/main/media/usage.gif?raw=true" alt="usage example" width="1000" />
 
 ### Arguments
 
@@ -108,13 +108,13 @@ For example, to navigate to `~/dev/app/components/navbar/link/` you could run th
 sd dev app comp nav link
 ```
 
-<img src="https://github.com/LexBorisoff/switch-dir/blob/readme/media/arguments.gif?raw=true" alt="usage example" width="1000" />
+<img src="https://github.com/LexBorisoff/switch-dir/blob/main/media/arguments.gif?raw=true" alt="usage example" width="1000" />
 
 ### Ambiguous arguments
 
 When multiple directories match a given argument, the CLI will prompt you to manually resolve this ambiguity by selecting the desired directory.
 
-<img src="https://github.com/LexBorisoff/switch-dir/blob/readme/media/multiple-matches.gif?raw=true" alt="usage example" width="1000" />
+<img src="https://github.com/LexBorisoff/switch-dir/blob/main/media/multiple-matches.gif?raw=true" alt="usage example" width="1000" />
 
 > 💡 When multiple directories match an argument but there is an exact match, it will be chosen automatically.
 
