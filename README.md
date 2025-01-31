@@ -146,7 +146,7 @@ sd --root ~/dev
 sd app conf prod --root ~/dev
 ```
 
-> 👆 navigates to the `~/dev/app/config/prod` directory from whatever directory you are in
+> 👆 navigates to `~/dev/app/config/prod` from whatever directory you are in
 
 ## Portals
 

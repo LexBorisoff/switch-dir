@@ -3,6 +3,10 @@
   "version": "0.0.0-semantically-released",
   "description": "CLI for fast and interactive navigation between directories",
   "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "prepack": "npm run build",
     "build": "npm run compile",
