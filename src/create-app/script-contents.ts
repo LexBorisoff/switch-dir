@@ -11,7 +11,7 @@ ${functionName}() {
     local directory=$(<"${paths.directory}")
     
     # clear tmp files
-    >"${paths.directory}"
+    : >"${paths.directory}"
 
     # cd to directory
     if test -n "$directory"; then
