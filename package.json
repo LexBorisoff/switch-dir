@@ -16,9 +16,9 @@
     "check:build": "npm run compile -- --noEmit",
     "check:format": "prettier --check \"*.{js,cjs,mjs,ts,cts,mts}\" \"{src,test}/**/*.ts\"",
     "check:lint": "eslint \"{src,test}/**/*.{js,ts}\"",
-    "style": "npm run format && npm run lint:fix",
+    "style": "npm run format && npm run lint",
     "format": "prettier --write \"*.{js,cjs,mjs,ts,cts,mts}\" \"{src,test}/**/*.ts\"",
-    "lint": "npm run lint -- --fix",
+    "lint": "npm run check:lint -- --fix",
     "compile": "tsc -p tsconfig.json",
     "prepare": "husky"
   },
