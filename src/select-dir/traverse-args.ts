@@ -51,7 +51,7 @@ export async function traverseArgs(
       return;
     }
 
-    if (/[/\\]/.test(currentArg)) {
+    if (/[/\\]/.test(currentArg) || currentArg === '..') {
       const hasNextArg = addDir(currentArg);
       if (hasNextArg) {
         await traverse();
