@@ -17,7 +17,7 @@ function sortPortals(
 
 const all = sortPortals(configPortals);
 
-function getReachable(reachable: boolean): Record<string, string> {
+function getReachablePortals(reachable = true): Record<string, string> {
   return Object.entries(all).reduce<Record<string, string>>(
     (acc, [key, value]) => {
       if (fs.existsSync(value) === reachable) {
@@ -31,6 +31,6 @@ function getReachable(reachable: boolean): Record<string, string> {
 
 export const portals = {
   all,
-  reachable: getReachable(true),
-  unreachable: getReachable(false),
+  reachable: getReachablePortals(),
+  unreachable: getReachablePortals(false),
 };

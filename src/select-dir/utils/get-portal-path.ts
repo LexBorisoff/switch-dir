@@ -18,6 +18,10 @@ export async function getPortalPath(
 ): Promise<string | undefined> {
   const { reachable: portals } = portalGroups;
 
+  if (Object.keys(portals).length === 0) {
+    throw new Error('No portals exist. Use -a option to add a portal');
+  }
+
   // exact match
   if (portalArg !== '' && portals[portalArg] != null) {
     return portals[portalArg];
