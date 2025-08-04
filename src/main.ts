@@ -21,7 +21,7 @@ import { updateTmp } from './utils/update-tmp.js';
       return;
     }
 
-    if (args.remove) {
+    if (args.delete) {
       await deletePortals();
       return;
     }
