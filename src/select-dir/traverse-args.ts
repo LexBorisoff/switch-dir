@@ -51,6 +51,14 @@ export async function traverseArgs(
       return;
     }
 
+    if (/[/\\]/.test(currentArg)) {
+      const hasNextArg = addDir(currentArg);
+      if (hasNextArg) {
+        await traverse();
+      }
+      return;
+    }
+
     const currentPath = path.resolve(rootPath, ...dirNames);
     const matchedDirs = getMatchedDirs(currentArg);
 
