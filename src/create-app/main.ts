@@ -4,9 +4,9 @@ import $_ from '@lexjs/prompts';
 import chalk from 'chalk';
 import 'dotenv/config';
 
+import { useCoreActions } from '../actions/core-actions.js';
 import { updateConfig } from '../config/update-config.js';
 import { CONFIG_FILE, PACKAGE_NAME } from '../constants.js';
-import { useCoreHooks } from '../hooks/use-core-hooks.js';
 import { logger } from '../utils/logger.js';
 import { parseData } from '../utils/parse-data.js';
 
@@ -25,11 +25,11 @@ function isEmpty(str: string | undefined): str is undefined | '' {
   let command: string | undefined;
 
   // get current config data if exists
-  const rootDir = useCoreHooks((root) => root);
+  const rootDir = useCoreActions((root) => root);
   const configExists = rootDir.exists(CONFIG_FILE);
 
   if (configExists) {
-    const configData = rootDir.fileRead(CONFIG_FILE);
+    const configData = rootDir.readFile(CONFIG_FILE);
 
     if (configData != null) {
       const config = parseData<ConfigInterface>(configData);

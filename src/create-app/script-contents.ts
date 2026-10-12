@@ -15,7 +15,7 @@ ${functionName}() {
 
     # cd to directory
     if test -n "$directory"; then
-      cd "$directory"
+      builtin cd "$directory"
     fi
   fi
 }
