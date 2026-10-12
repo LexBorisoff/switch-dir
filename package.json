@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@lexjs/filetree": "^3.0.0",
-    "@lexjs/prompts": "^1.2.1",
+    "@lexjs/prompts": "^1.2.3",
     "chalk": "^4.1.2",
     "dotenv": "^16.4.7",
     "execa": "^9.5.2",
