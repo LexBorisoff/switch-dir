@@ -20,6 +20,7 @@ export async function traverseSelect(
       name: 'selected',
       message: path.basename(parentPath) || parentPath,
       choices,
+      initial: 2, // skip . and .. directories
       suggest(input: string | number, list) {
         const inputStr = `${input}`;
         const inputArr = inputStr.split(/\s+/);

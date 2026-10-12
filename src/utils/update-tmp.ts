@@ -1,11 +1,11 @@
-import { useCoreHooks } from '../hooks/use-core-hooks.js';
+import { useCoreActions } from '../actions/core-actions.js';
 
-export function updateTmp(dir: string): void {
-  const rootDir = useCoreHooks((root) => root);
+export function updateTmp(data: string): void {
+  const rootDir = useCoreActions((root) => root);
   if (!rootDir.exists('tmp')) {
-    rootDir.dirCreate('tmp');
+    rootDir.createDir('tmp');
   }
 
-  const dirFile = useCoreHooks(({ tmp }) => tmp.directory);
-  dirFile.write(dir);
+  const dirFile = useCoreActions(({ tmp }) => tmp.directory);
+  dirFile.write(data);
 }

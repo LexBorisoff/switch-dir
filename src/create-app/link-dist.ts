@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 
+import { useCoreActions } from '../actions/core-actions.js';
 import { IS_WINDOWS, PACKAGE_NAME } from '../constants.js';
-import { useCoreHooks } from '../hooks/use-core-hooks.js';
 import { paths } from '../paths.js';
 
 export function linkDist(): void {
-  const distPath = useCoreHooks(
+  const distPath = useCoreActions(
     ({ lib }) => lib.node_modules[PACKAGE_NAME].dist,
   ).getPath();
 

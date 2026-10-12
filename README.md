@@ -1,7 +1,7 @@
-# `switch-dir`
+# `@lexjs/sd`
 
 ![Build](https://img.shields.io/github/actions/workflow/status/LexBorisoff/switch-dir/release.yml)
-![NPM Version](https://img.shields.io/npm/v/switch-dir)
+![NPM Version](https://img.shields.io/npm/v/@lexjs/sd)
 
 CLI for fast and interactive navigation between directories.
 
@@ -21,7 +21,19 @@ CLI for fast and interactive navigation between directories.
 **Step 1**. Run the following command using **_npx_** from any directory.
 
 ```bash
-npx switch-dir
+npx @lexjs/sd
+```
+
+```bash
+pnpm dlx @lexjs/sd
+```
+
+```bash
+yarn dlx @lexjs/sd
+```
+
+```bash
+bunx @lexjs/sd
 ```
 
 **Step 2**. Follow the prompts to set up the command name.
@@ -33,9 +45,7 @@ npx switch-dir
 ```bash
 # ~/.bashrc or ~/.zshrc
 
-if test -f ~/.switch-dir/start.sh; then
-  . ~/.switch-dir/start.sh
-fi
+test -f ~/.lexjs/sd/start.sh && . ~/.lexjs/sd/start.sh
 ```
 
 - For PowerShell
@@ -43,8 +53,8 @@ fi
 ```powershell
 # C:\Program Files\PowerShell\7\profile.ps1
 
-if (Test-Path -Path "$env:HOMEPATH\.switch-dir\bin") {
-  $env:Path = "$env:HOMEPATH\.switch-dir\bin;$env:Path"
+if (Test-Path -Path "$env:HOMEPATH\.lexjs\sd\bin") {
+  $env:Path = "$env:HOMEPATH\.lexjs\sd\bin;$env:Path"
 }
 ```
 
@@ -54,7 +64,7 @@ if (Test-Path -Path "$env:HOMEPATH\.switch-dir\bin") {
 
 ### How it works
 
-The installation process creates a `~/.switch-dir` directory where it installs the **_core library_** and creates a **_shell script_** that acts as the program's main entry point. For shells like bash and zsh, the script contains a function that allows changing directories within the shell. To have this function available as a command, the script must be sourced on each shell startup, which is handled in the `start.sh` script. For PowerShell, the script's directory (`bin`) is added to your PATH, making the script accessible from anywhere in the shell. By giving the script (or function) a name that you prefer (or sticking to the default), you control how to invoke the program.
+The installation process creates a `~/.lexjs/sd` directory where it installs the **_core library_** and creates a **_shell script_** that acts as the program's main entry point. For shells like bash and zsh, the script contains a function that allows changing directories within the shell. To have this function available as a command, the script must be sourced on each shell startup, which is handled in the `start.sh` script. For PowerShell, the script's directory (`bin`) is added to your PATH, making the script accessible from anywhere in the shell. By giving the script (or function) a name that you prefer (or sticking to the default), you control how to invoke the program.
 
 ### Renaming the command
 

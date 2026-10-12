@@ -97,6 +97,7 @@ export async function traverseArgs(
       name: 'selected',
       message,
       choices,
+      initial: 2, // skip . and .. directories
       suggest(input: string | number, list) {
         const inputStr = `${input}`;
         let inputArr: string[] = [];
