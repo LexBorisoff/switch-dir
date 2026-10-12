@@ -1,7 +1,7 @@
 import { BASH_START_FILE, CONFIG_FILE, PACKAGE_NAME } from '../constants.js';
 import { bashStartScript } from '../create-app/script-contents.js';
 
-import type { TreeInterface } from 'fs-hooks';
+import type { TreeInterface } from '@lexjs/filetree';
 
 export const initialTree = {
   bin: {},

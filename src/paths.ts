@@ -1,23 +1,27 @@
 import os from 'node:os';
 import path from 'node:path';
 
-import { PACKAGE_NAME } from './constants.js';
+import { APP_NAME, PACKAGE_NAMESPACE } from './constants.js';
 
 class Paths {
+  get namespace(): string {
+    return path.join(os.homedir(), `.${PACKAGE_NAMESPACE}`);
+  }
+
   get root(): string {
-    return path.resolve(os.homedir(), `.${PACKAGE_NAME}`);
+    return path.join(this.namespace, APP_NAME);
   }
 
   get bin(): string {
-    return path.resolve(this.root, 'bin');
+    return path.join(this.root, 'bin');
   }
 
   get lib(): string {
-    return path.resolve(this.root, 'lib');
+    return path.join(this.root, 'lib');
   }
 
   get tmp(): string {
-    return path.resolve(this.root, 'tmp');
+    return path.join(this.root, 'tmp');
   }
 
   get distLinkName(): string {
@@ -25,15 +29,15 @@ class Paths {
   }
 
   get distLink(): string {
-    return path.resolve(this.root, this.distLinkName);
+    return path.join(this.root, this.distLinkName);
   }
 
   get main(): string {
-    return path.resolve(this.distLink, 'main.js');
+    return path.join(this.distLink, 'main.js');
   }
 
   get directory(): string {
-    return path.resolve(this.tmp, 'directory');
+    return path.join(this.tmp, 'directory');
   }
 }
 

@@ -5,7 +5,7 @@ import { renameCommand } from './create-app/rename-command.js';
 import { addPortal } from './portals/add-portal.js';
 import { deletePortals } from './portals/delete-portals.js';
 import { listPortals } from './portals/list-portals.js';
-import { selectDir } from './select-dir/index.js';
+import { selectDir } from './select-dir/select-dir.js';
 import { logger } from './utils/logger.js';
 import { updateTmp } from './utils/update-tmp.js';
 
